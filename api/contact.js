@@ -1,15 +1,16 @@
-import { Resend } from "resend";
+const { Resend } = require("resend");
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Only allow POST
   if (req.method !== "POST") {
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
   try {
-    const { fullName, organization, email, inquiryType, message } = req.body || {};
+    // Make sure JSON is parsed
+    const body = req.body || {};
+    const { fullName, organization, email, inquiryType, message } = body;
 
-    // Basic validation
     if (!fullName || !email || !message) {
       return res.status(400).json({
         ok: false,
@@ -17,12 +18,13 @@ export default async function handler(req, res) {
       });
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.log("RESEND_API_KEY missing in environment variables");
+      return res.status(500).json({ ok: false, error: "RESEND_API_KEY not set" });
+    }
 
-    // IMPORTANT:
-    // Use a verified sender on your verified domain.
-    // If you already have info@ working, use it.
-    const fromAddress = "HBRZ Website <info@hbrzglobalpurity.com>";
+    const resend = new Resend(apiKey);
 
     const subject = `New Inquiry (${inquiryType || "General"}) - ${fullName}`;
 
@@ -36,25 +38,23 @@ export default async function handler(req, res) {
       <pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(message)}</pre>
     `;
 
-    const { data, error } = await resend.emails.send({
-      from: fromAddress,
+    const result = await resend.emails.send({
+      from: "onboarding@resend.dev",            // safest sender for now
       to: ["info@hbrzglobalpurity.com"],
-      replyTo: email, // So you can reply directly to the sender
+      reply_to: email,                           // NOTE: resend uses reply_to (snake_case)
       subject,
       html,
     });
 
-    if (error) {
-      return res.status(500).json({ ok: false, error });
-    }
+    console.log("Resend result:", result);
 
-    return res.status(200).json({ ok: true, id: data?.id });
+    return res.status(200).json({ ok: true, result });
   } catch (err) {
+    console.error("API /api/contact error:", err);
     return res.status(500).json({ ok: false, error: String(err) });
   }
-}
+};
 
-// Small helper to prevent HTML injection in email body
 function escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
@@ -63,3 +63,4 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
