@@ -2,12 +2,48 @@ import React, { useState } from 'react';
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [email, setEmail] = useState("");
+  const [inquiryType, setInquiryType] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Simulate API call
-    setTimeout(() => setSubmitted(false), 5000);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          organization,
+          email,
+          inquiryType,
+          message,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        console.error("Submit failed:", data);
+        alert("Sorry — your message could not be sent. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 5000);
+
+      setFullName("");
+      setOrganization("");
+      setEmail("");
+      setInquiryType("");
+      setMessage("");
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Please try again.");
+    }
   };
 
   return (
@@ -105,20 +141,20 @@ const Contact: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Full Name</label>
-                      <input type="text" required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all" />
+                      <input value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all" />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Organization</label>
-                      <input type="text" required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all" />
+                      <input value={organization} onChange={(e) => setOrganization(e.target.value)} type="text" required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Email Address</label>
-                    <input type="email" required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all" />
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Inquiry Type</label>
-                    <select required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all bg-white">
+                    <select value={inquiryType} onChange={(e) => setInquiryType(e.target.value)} required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all bg-white">
                       <option value="">Select a service category</option>
                       <option value="trading">Commodity Trading Inquiry</option>
                       <option value="consulting">Institutional Consulting</option>
@@ -128,7 +164,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Message</label>
-                    <textarea rows={5} required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all resize-none"></textarea>
+                    <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} required className="w-full px-4 py-3 rounded border border-gray-300 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all resize-none"></textarea>
                   </div>
                   <button type="submit" className="w-full bg-hbrz-blue text-white font-bold py-4 rounded hover:bg-opacity-90 transition-all shadow-md uppercase tracking-widest text-sm">
                     Submit Professional Inquiry
