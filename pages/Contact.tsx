@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -11,26 +12,20 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const serviceId = 'service_w24ty62';
+    const templateId = 'template_19r61a9';
+    const publicKey = 'VmvzGtfsd2Jj4qf2_';
+
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName,
-          organization,
-          email,
-          inquiryType,
-          message,
-        }),
-      });
+      const templateParams = {
+        from_name: fullName,
+        from_email: email,
+        organization,
+        inquiry_type: inquiryType,
+        message,
+      };
 
-      const data = await res.json();
-
-      if (!res.ok || !data.ok) {
-        console.error("Submit failed:", data);
-        alert("Sorry — your message could not be sent. Please try again.");
-        return;
-      }
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 5000);
@@ -41,8 +36,14 @@ const Contact: React.FC = () => {
       setInquiryType("");
       setMessage("");
     } catch (err) {
-      console.error(err);
-      alert("Network error. Please try again.");
+      const origin = window.location.origin;
+      const msg = typeof err === 'object' && err && 'text' in (err as any) ? (err as any).text : String(err);
+      console.error('EmailJS send error:', err);
+      if (msg && msg.toLowerCase().includes('origin is not allowed')) {
+        alert(`Sending blocked: authorize "${origin}" in EmailJS Dashboard → Account → Security → Allowed Origins, then retry.`);
+      } else {
+        alert("Sorry — your message could not be sent. Please try again.");
+      }
     }
   };
 
