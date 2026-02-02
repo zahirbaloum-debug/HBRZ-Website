@@ -1,7 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Insights: React.FC = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const serviceId = 'service_w24ty62';
+    const templateId = 'template_19r61a9';
+    const publicKey = 'VmvzGtfsd2Jj4qf2_';
+
+    try {
+      const templateParams = {
+        from_name: "Subscriber",
+        from_email: email,
+        organization: "N/A",
+        inquiry_type: "Newsletter Subscription",
+        message: "Please add this email to the subscription list.",
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      setSubmitted(true);
+      setEmail("");
+      setTimeout(() => setSubmitted(false), 5000);
+      alert("Successfully subscribed to Institutional Briefs!");
+    } catch (err) {
+      console.error(err);
+      alert("Subscription failed. Please try again.");
+    }
+  };
 
   const papers = [
     { 
@@ -64,15 +94,17 @@ const Insights: React.FC = () => {
           <p className="text-gray-500 font-light leading-relaxed mb-10">
             Receive curated strategic analyses and regulatory updates directly from our global advisory team.
           </p>
-          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={handleSubscribe}>
             <input 
               type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Professional Email Address" 
               className="flex-grow px-6 py-4 rounded-sm border border-gray-200 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all text-sm"
               required
             />
-            <button className="bg-hbrz-blue text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-xs hover:bg-opacity-90 transition-all shadow-md">
-              Subscribe
+            <button type="submit" className="bg-hbrz-blue text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-xs hover:bg-opacity-90 transition-all shadow-md">
+              {submitted ? "Subscribed" : "Subscribe"}
             </button>
           </form>
           <p className="mt-6 text-[10px] text-gray-400 uppercase tracking-widest">
