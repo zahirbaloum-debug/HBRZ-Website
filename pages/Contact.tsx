@@ -1,20 +1,21 @@
-import React, { useState } from "react";
-import emailjs from "@emailjs/browser";
+import emailjs from '@emailjs/browser';
+import type React from 'react';
+import { useState } from 'react';
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [organization, setOrganization] = useState("");
-  const [email, setEmail] = useState("");
-  const [inquiryType, setInquiryType] = useState("");
-  const [message, setMessage] = useState("");
+  const [fullName, setFullName] = useState('');
+  const [organization, setOrganization] = useState('');
+  const [email, setEmail] = useState('');
+  const [inquiryType, setInquiryType] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const serviceId = "service_jicy06g";
-    const templateId = "template_fsyhxji";
-    const publicKey = "2Stb0Xb7oNBWEwb1Z";
+    const serviceId = 'service_jicy06g';
+    const templateId = 'template_fsyhxji';
+    const publicKey = '2Stb0Xb7oNBWEwb1Z';
 
     try {
       const templateParams = {
@@ -31,31 +32,31 @@ const Contact: React.FC = () => {
           throttle: 10000, // 10 seconds between submissions
         },
         blockList: {
-          watchVariable: "from_email",
+          watchVariable: 'from_email',
         },
       });
 
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 5000);
 
-      setFullName("");
-      setOrganization("");
-      setEmail("");
-      setInquiryType("");
-      setMessage("");
+      setFullName('');
+      setOrganization('');
+      setEmail('');
+      setInquiryType('');
+      setMessage('');
     } catch (err) {
       const origin = window.location.origin;
       const msg =
-        typeof err === "object" && err && "text" in (err as any)
+        typeof err === 'object' && err && 'text' in (err as any)
           ? (err as any).text
           : String(err);
-      console.error("EmailJS send error:", err);
-      if (msg && msg.toLowerCase().includes("origin is not allowed")) {
+      console.error('EmailJS send error:', err);
+      if (msg && msg.toLowerCase().includes('origin is not allowed')) {
         alert(
           `Sending blocked: authorize "${origin}" in EmailJS Dashboard → Account → Security → Allowed Origins, then retry.`,
         );
       } else {
-        alert("Sorry — your message could not be sent. Please try again.");
+        alert('Sorry — your message could not be sent. Please try again.');
       }
     }
   };

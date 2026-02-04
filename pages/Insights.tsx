@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from "react";
-import emailjs from "@emailjs/browser";
+import emailjs from '@emailjs/browser';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 const Insights: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const serviceId = "service_jicy06g";
-    const templateId = "template_fsyhxji";
-    const publicKey = "2Stb0Xb7oNBWEwb1Z";
+    const serviceId = 'service_jicy06g';
+    const templateId = 'template_fsyhxji';
+    const publicKey = '2Stb0Xb7oNBWEwb1Z';
 
     try {
       const templateParams = {
-        from_name: "Subscriber",
+        from_name: 'Subscriber',
         from_email: email,
-        organization: "N/A",
-        inquiry_type: "Newsletter Subscription",
-        message: "Please add this email to the subscription list.",
+        organization: 'N/A',
+        inquiry_type: 'Newsletter Subscription',
+        message: 'Please add this email to the subscription list.',
       };
 
       await emailjs.send(serviceId, templateId, templateParams, {
@@ -30,34 +31,34 @@ const Insights: React.FC = () => {
           throttle: 10000, // 10 seconds between submissions
         },
         blockList: {
-          watchVariable: "from_email",
+          watchVariable: 'from_email',
         },
       });
       setSubmitted(true);
-      setEmail("");
+      setEmail('');
       setTimeout(() => setSubmitted(false), 5000);
-      alert("Successfully subscribed to Institutional Briefs!");
+      alert('Successfully subscribed to Institutional Briefs!');
     } catch (err) {
       console.error(err);
-      alert("Subscription failed. Please try again.");
+      alert('Subscription failed. Please try again.');
     }
   };
 
   const papers = [
     {
-      category: "Strategic Brief",
-      title: "Nigeria’s Trade Documentation Framework",
-      desc: "An institutional overview of the Central Bank of Nigeria’s Form NXP process and its relevance to governance and documentation standards.",
+      category: 'Strategic Brief',
+      title: 'Nigeria’s Trade Documentation Framework',
+      desc: 'An institutional overview of the Central Bank of Nigeria’s Form NXP process and its relevance to governance and documentation standards.',
     },
     {
-      category: "Compliance Brief",
-      title: "Trade Governance in West Africa",
-      desc: "An analytical perspective on regulatory alignment and governance frameworks supporting responsible and transparent commodity market participation.",
+      category: 'Compliance Brief',
+      title: 'Trade Governance in West Africa',
+      desc: 'An analytical perspective on regulatory alignment and governance frameworks supporting responsible and transparent commodity market participation.',
     },
     {
-      category: "Operational Systems Note",
-      title: "Coordinated Process Models for Cross-Border Commerce",
-      desc: "A systems-based perspective on structured coordination between regional and international commercial processes.",
+      category: 'Operational Systems Note',
+      title: 'Coordinated Process Models for Cross-Border Commerce',
+      desc: 'A systems-based perspective on structured coordination between regional and international commercial processes.',
     },
   ];
 
@@ -139,7 +140,7 @@ const Insights: React.FC = () => {
               type="submit"
               className="bg-hbrz-blue text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-xs hover:bg-opacity-90 transition-all shadow-md"
             >
-              {submitted ? "Subscribed" : "Subscribe"}
+              {submitted ? 'Subscribed' : 'Subscribe'}
             </button>
           </form>
           <p className="mt-6 text-[10px] text-gray-400 uppercase tracking-widest">

@@ -1,6 +1,6 @@
-
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from '@google/genai';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface TickerData {
   label: string;
@@ -9,17 +9,34 @@ interface TickerData {
 
 const Ticker: React.FC = () => {
   const initialAssets = [
-    'XAU/USD', 'XAG/USD', 'Platinum', 'Palladium', 'Copper',
-    'Brent Crude', 'WTI', 'Natural Gas',
-    'Dow Jones', 'S&P 500', 'NASDAQ', 'FTSE 100', 'DAX', 'Nikkei 225', 'Hang Seng',
-    'USD/NGN', 'EUR/USD', 'GBP/USD', 'USD/JPY', 'USD/ILS',
-    'Bitcoin', 'Ethereum'
+    'XAU/USD',
+    'XAG/USD',
+    'Platinum',
+    'Palladium',
+    'Copper',
+    'Brent Crude',
+    'WTI',
+    'Natural Gas',
+    'Dow Jones',
+    'S&P 500',
+    'NASDAQ',
+    'FTSE 100',
+    'DAX',
+    'Nikkei 225',
+    'Hang Seng',
+    'USD/NGN',
+    'EUR/USD',
+    'GBP/USD',
+    'USD/JPY',
+    'USD/ILS',
+    'Bitcoin',
+    'Ethereum',
   ];
 
   const [data, setData] = useState<TickerData[]>(
-    initialAssets.map(label => ({ label, value: '...' }))
+    initialAssets.map((label) => ({ label, value: '...' })),
   );
-  
+
   const isLockedOut = useRef(false);
   const lastFetchTime = useRef(0);
 
@@ -63,53 +80,61 @@ const Ticker: React.FC = () => {
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: 'gemini-3-flash-preview',
         contents: `Provide the current, live market prices or exchange rates for these assets as of today: ${initialAssets.join(', ')}. Use Google Search to ensure accuracy for today's date. Format the output strictly as a plain list: "Asset: Value". No conversational text or headers.`,
         config: {
           tools: [{ googleSearch: {} }], // Re-enabled for real-time accuracy
-          thinkingConfig: { thinkingBudget: 0 } 
+          thinkingConfig: { thinkingBudget: 0 },
         },
       });
 
-      const text = response.text || "";
-      const lines = text.split('\n').filter(line => line.includes(':'));
-      
-      const parsedData = lines.map(line => {
-        const parts = line.split(':');
-        if (parts.length >= 2) {
-           const labelRaw = parts[0].replace(/[*#-]/g, '').trim();
-           const value = parts.slice(1).join(':').trim();
-           
-           const matchedLabel = initialAssets.find(a => 
-             labelRaw.toLowerCase().includes(a.toLowerCase()) || 
-             a.toLowerCase().includes(labelRaw.toLowerCase())
-           );
+      const text = response.text || '';
+      const lines = text.split('\n').filter((line) => line.includes(':'));
 
-           return { label: matchedLabel || labelRaw, value };
-        }
-        return null;
-      }).filter(item => item !== null) as TickerData[];
+      const parsedData = lines
+        .map((line) => {
+          const parts = line.split(':');
+          if (parts.length >= 2) {
+            const labelRaw = parts[0].replace(/[*#-]/g, '').trim();
+            const value = parts.slice(1).join(':').trim();
+
+            const matchedLabel = initialAssets.find(
+              (a) =>
+                labelRaw.toLowerCase().includes(a.toLowerCase()) ||
+                a.toLowerCase().includes(labelRaw.toLowerCase()),
+            );
+
+            return { label: matchedLabel || labelRaw, value };
+          }
+          return null;
+        })
+        .filter((item) => item !== null) as TickerData[];
 
       if (parsedData.length > 0) {
-        const merged = initialAssets.map(asset => {
-          const found = parsedData.find(p => p.label.toLowerCase().includes(asset.toLowerCase()) || asset.toLowerCase().includes(p.label.toLowerCase()));
+        const merged = initialAssets.map((asset) => {
+          const found = parsedData.find(
+            (p) =>
+              p.label.toLowerCase().includes(asset.toLowerCase()) ||
+              asset.toLowerCase().includes(p.label.toLowerCase()),
+          );
           return found || { label: asset, value: 'N/A' };
         });
         setData(merged);
         lastFetchTime.current = Date.now();
       } else {
-        throw new Error("Empty response");
+        throw new Error('Empty response');
       }
     } catch (error: any) {
-      const isRateLimit = error.status === 429 || 
-                          error.message?.includes('429') || 
-                          error.message?.includes('RESOURCE_EXHAUSTED') ||
-                          error.error?.code === 429;
+      const isRateLimit =
+        error.status === 429 ||
+        error.message?.includes('429') ||
+        error.message?.includes('RESOURCE_EXHAUSTED') ||
+        error.error?.code === 429;
 
       if (isRateLimit) {
         isLockedOut.current = true;
         lastFetchTime.current = Date.now();
-        console.warn("Ticker API quota hit or limited. Using fallback data.");
+        console.warn('Ticker API quota hit or limited. Using fallback data.');
         setFallbackData();
         return;
       }
@@ -118,7 +143,7 @@ const Ticker: React.FC = () => {
         setTimeout(() => fetchMarketData(retryCount + 1), 5000);
         return;
       }
-      
+
       setFallbackData();
     }
   };
@@ -126,7 +151,7 @@ const Ticker: React.FC = () => {
   useEffect(() => {
     fetchMarketData();
     // Refresh every 15 minutes to keep it relatively fresh without exhausting quota
-    const interval = setInterval(() => fetchMarketData(), 900000); 
+    const interval = setInterval(() => fetchMarketData(), 900000);
     return () => clearInterval(interval);
   }, []);
 
@@ -135,17 +160,25 @@ const Ticker: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 flex items-center">
         <div className="flex-shrink-0 flex items-center mr-6 border-r border-white/10 pr-6">
           <span className="flex h-2 w-2 rounded-full bg-green-500 mr-2.5 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
-          <span className="text-[10px] font-bold text-hbrz-gold uppercase tracking-[0.25em] whitespace-nowrap">Global Markets</span>
+          <span className="text-[10px] font-bold text-hbrz-gold uppercase tracking-[0.25em] whitespace-nowrap">
+            Global Markets
+          </span>
         </div>
-        
+
         <div className="relative flex overflow-x-hidden">
           <div className="animate-marquee whitespace-nowrap flex space-x-16 items-center">
             {data.concat(data).map((item, index) => (
               <div key={index} className="flex items-center space-x-3 group">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter group-hover:text-hbrz-gold transition-colors">{item.label}</span>
-                <span className="text-[11px] font-mono font-bold text-white tabular-nums">{item.value}</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter group-hover:text-hbrz-gold transition-colors">
+                  {item.label}
+                </span>
+                <span className="text-[11px] font-mono font-bold text-white tabular-nums">
+                  {item.value}
+                </span>
                 {index < data.concat(data).length - 1 && (
-                  <span className="text-white/10 text-xs font-light px-2">|</span>
+                  <span className="text-white/10 text-xs font-light px-2">
+                    |
+                  </span>
                 )}
               </div>
             ))}

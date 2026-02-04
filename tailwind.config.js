@@ -10,15 +10,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        'hbrz-blue': '#002B5B',
-        'hbrz-gold': '#C5A021',
+        "hbrz-blue": "#002B5B",
+        "hbrz-gold": "#C5A021",
       },
       letterSpacing: {
-        'widest-plus': '0.2em',
-        'ultra-wide': '0.3em',
-        'mega-wide': '0.4em',
+        "widest-plus": "0.2em",
+        "ultra-wide": "0.3em",
+        "mega-wide": "0.4em",
       },
     },
   },
   plugins: [],
-}
+};
