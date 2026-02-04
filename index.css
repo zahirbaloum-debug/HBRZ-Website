@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --color-hbrz-blue: #002b5b;
+  --color-hbrz-gold: #c5a021;
+}
+
+@layer base {
+  body {
+    font-family: "Inter", sans-serif;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: "Playfair Display", serif;
+  }
+}

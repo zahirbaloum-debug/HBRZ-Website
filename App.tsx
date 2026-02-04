@@ -1,20 +1,20 @@
-import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Mission from './pages/Mission';
-import Strategy from './pages/Strategy';
-import People from './pages/People';
-import Insights from './pages/Insights';
-import Careers from './pages/Careers';
-import Services from './pages/Services';
-import Trading from './pages/Trading';
-import Consulting from './pages/Consulting';
-import ITServices from './pages/ITServices';
-import Compliance from './pages/Compliance';
-import Contact from './pages/Contact';
-import Navbar from './components/Navbar';
+import type React from 'react';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import About from './pages/About';
+import Careers from './pages/Careers';
+import Compliance from './pages/Compliance';
+import Consulting from './pages/Consulting';
+import Contact from './pages/Contact';
+import Home from './pages/Home';
+import Insights from './pages/Insights';
+import ITServices from './pages/ITServices';
+import Mission from './pages/Mission';
+import People from './pages/People';
+import Services from './pages/Services';
+import Strategy from './pages/Strategy';
+import Trading from './pages/Trading';
 
 const App: React.FC = () => {
   return (
