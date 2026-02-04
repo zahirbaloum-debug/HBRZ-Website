@@ -18,9 +18,13 @@ const Insights: React.FC = () => {
   }, []);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Prevent double submission
+    if (isSubmitting) return;
 
     // Validate email
     if (!validateEmail(email)) {
@@ -31,6 +35,8 @@ const Insights: React.FC = () => {
     const serviceId = "service_jicy06g";
     const templateId = "template_fsyhxji";
     const publicKey = "2Stb0Xb7oNBWEwb1Z";
+
+    setIsSubmitting(true);
 
     try {
       // Sanitize email before sending
@@ -60,6 +66,8 @@ const Insights: React.FC = () => {
       alert(
         "Unable to process your subscription at this time. Please try again later or contact us at Info@hbrzglobalpurity.com",
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -157,9 +165,10 @@ const Insights: React.FC = () => {
             />
             <button
               type="submit"
-              className="bg-hbrz-blue text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-xs hover:bg-opacity-90 transition-all shadow-md"
+              disabled={isSubmitting}
+              className="bg-hbrz-blue text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-xs hover:bg-opacity-90 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitted ? "Subscribed" : "Subscribe"}
+              {isSubmitting ? "Subscribing..." : "Subscribe"}
             </button>
           </form>
           <p className="mt-6 text-[10px] text-gray-400 uppercase tracking-widest">

@@ -19,6 +19,7 @@ const validateLength = (input: string, min: number, max: number): boolean => {
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [fullName, setFullName] = useState("");
   const [organization, setOrganization] = useState("");
   const [email, setEmail] = useState("");
@@ -27,6 +28,9 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Prevent double submission
+    if (isSubmitting) return;
 
     // Validate inputs
     if (!validateLength(fullName, 2, 100)) {
@@ -57,6 +61,8 @@ const Contact: React.FC = () => {
     const serviceId = "service_jicy06g";
     const templateId = "template_fsyhxji";
     const publicKey = "2Stb0Xb7oNBWEwb1Z";
+
+    setIsSubmitting(true);
 
     try {
       // Sanitize inputs before sending
@@ -91,6 +97,8 @@ const Contact: React.FC = () => {
       alert(
         "Unable to send your message at this time. Please try again later or contact us directly at Info@hbrzglobalpurity.com",
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -342,9 +350,12 @@ const Contact: React.FC = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-hbrz-blue text-white font-bold py-4 rounded hover:bg-opacity-90 transition-all shadow-md uppercase tracking-widest text-sm"
+                    disabled={isSubmitting}
+                    className="w-full bg-hbrz-blue text-white font-bold py-4 rounded hover:bg-opacity-90 transition-all shadow-md uppercase tracking-widest text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit Professional Inquiry
+                    {isSubmitting
+                      ? "Sending..."
+                      : "Submit Professional Inquiry"}
                   </button>
                   <p className="text-[10px] text-gray-400 text-center italic">
                     By submitting this form, you acknowledge that HBRZ operates
