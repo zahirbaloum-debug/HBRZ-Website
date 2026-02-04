@@ -11,9 +11,9 @@ const Insights: React.FC = () => {
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const serviceId = "service_w24ty62";
-    const templateId = "template_19r61a9";
-    const publicKey = "VmvzGtfsd2Jj4qf2_";
+    const serviceId = "service_jicy06g";
+    const templateId = "template_fsyhxji";
+    const publicKey = "2Stb0Xb7oNBWEwb1Z";
 
     try {
       const templateParams = {
