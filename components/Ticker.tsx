@@ -1,6 +1,5 @@
-import { GoogleGenAI } from '@google/genai';
-import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type React from "react";
+import { useState } from "react";
 
 interface TickerData {
   label: string;
@@ -8,152 +7,30 @@ interface TickerData {
 }
 
 const Ticker: React.FC = () => {
-  const initialAssets = [
-    'XAU/USD',
-    'XAG/USD',
-    'Platinum',
-    'Palladium',
-    'Copper',
-    'Brent Crude',
-    'WTI',
-    'Natural Gas',
-    'Dow Jones',
-    'S&P 500',
-    'NASDAQ',
-    'FTSE 100',
-    'DAX',
-    'Nikkei 225',
-    'Hang Seng',
-    'USD/NGN',
-    'EUR/USD',
-    'GBP/USD',
-    'USD/JPY',
-    'USD/ILS',
-    'Bitcoin',
-    'Ethereum',
-  ];
-
-  const [data, setData] = useState<TickerData[]>(
-    initialAssets.map((label) => ({ label, value: '...' })),
-  );
-
-  const isLockedOut = useRef(false);
-  const lastFetchTime = useRef(0);
-
-  const setFallbackData = useCallback(() => {
-    // Updated fallback data to reflect early 2025 market estimates
-    setData([
-      { label: 'XAU/USD', value: '2,685.50' },
-      { label: 'XAG/USD', value: '31.25' },
-      { label: 'Platinum', value: '985.00' },
-      { label: 'Palladium', value: '1,010.00' },
-      { label: 'Copper', value: '4.15' },
-      { label: 'Brent Crude', value: '74.20' },
-      { label: 'WTI', value: '70.85' },
-      { label: 'Natural Gas', value: '3.12' },
-      { label: 'Dow Jones', value: '43,950.00' },
-      { label: 'S&P 500', value: '5,980.00' },
-      { label: 'NASDAQ', value: '19,250.00' },
-      { label: 'FTSE 100', value: '8,320.00' },
-      { label: 'DAX', value: '19,150.00' },
-      { label: 'Nikkei 225', value: '39,400.00' },
-      { label: 'Hang Seng', value: '19,800.00' },
-      { label: 'USD/NGN', value: '1,720.00' },
-      { label: 'EUR/USD', value: '1.0540' },
-      { label: 'GBP/USD', value: '1.2650' },
-      { label: 'USD/JPY', value: '154.50' },
-      { label: 'USD/ILS', value: '3.75' },
-      { label: 'Bitcoin', value: '96,250.00' },
-      { label: 'Ethereum', value: '3,210.00' },
-    ]);
-  }, []);
-
-  const fetchMarketData = async (retryCount = 0) => {
-    // If locked out, check if it's been more than 15 minutes (shortened for better freshness)
-    if (isLockedOut.current) {
-      if (Date.now() - lastFetchTime.current < 900000) {
-        return;
-      }
-      isLockedOut.current = false;
-    }
-
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: `Provide the current, live market prices or exchange rates for these assets as of today: ${initialAssets.join(', ')}. Use Google Search to ensure accuracy for today's date. Format the output strictly as a plain list: "Asset: Value". No conversational text or headers.`,
-        config: {
-          tools: [{ googleSearch: {} }], // Re-enabled for real-time accuracy
-          thinkingConfig: { thinkingBudget: 0 },
-        },
-      });
-
-      const text = response.text || '';
-      const lines = text.split('\n').filter((line) => line.includes(':'));
-
-      const parsedData = lines
-        .map((line) => {
-          const parts = line.split(':');
-          if (parts.length >= 2) {
-            const labelRaw = parts[0].replace(/[*#-]/g, '').trim();
-            const value = parts.slice(1).join(':').trim();
-
-            const matchedLabel = initialAssets.find(
-              (a) =>
-                labelRaw.toLowerCase().includes(a.toLowerCase()) ||
-                a.toLowerCase().includes(labelRaw.toLowerCase()),
-            );
-
-            return { label: matchedLabel || labelRaw, value };
-          }
-          return null;
-        })
-        .filter((item) => item !== null) as TickerData[];
-
-      if (parsedData.length > 0) {
-        const merged = initialAssets.map((asset) => {
-          const found = parsedData.find(
-            (p) =>
-              p.label.toLowerCase().includes(asset.toLowerCase()) ||
-              asset.toLowerCase().includes(p.label.toLowerCase()),
-          );
-          return found || { label: asset, value: 'N/A' };
-        });
-        setData(merged);
-        lastFetchTime.current = Date.now();
-      } else {
-        throw new Error('Empty response');
-      }
-    } catch (error: any) {
-      const isRateLimit =
-        error.status === 429 ||
-        error.message?.includes('429') ||
-        error.message?.includes('RESOURCE_EXHAUSTED') ||
-        error.error?.code === 429;
-
-      if (isRateLimit) {
-        isLockedOut.current = true;
-        lastFetchTime.current = Date.now();
-        console.warn('Ticker API quota hit or limited. Using fallback data.');
-        setFallbackData();
-        return;
-      }
-
-      if (retryCount < 1) {
-        setTimeout(() => fetchMarketData(retryCount + 1), 5000);
-        return;
-      }
-
-      setFallbackData();
-    }
-  };
-
-  useEffect(() => {
-    fetchMarketData();
-    // Refresh every 15 minutes to keep it relatively fresh without exhausting quota
-    const interval = setInterval(() => fetchMarketData(), 900000);
-    return () => clearInterval(interval);
-  }, []);
+  const [data] = useState<TickerData[]>([
+    { label: "XAU/USD", value: "2,685.50" },
+    { label: "XAG/USD", value: "31.25" },
+    { label: "Platinum", value: "985.00" },
+    { label: "Palladium", value: "1,010.00" },
+    { label: "Copper", value: "4.15" },
+    { label: "Brent Crude", value: "74.20" },
+    { label: "WTI", value: "70.85" },
+    { label: "Natural Gas", value: "3.12" },
+    { label: "Dow Jones", value: "43,950.00" },
+    { label: "S&P 500", value: "5,980.00" },
+    { label: "NASDAQ", value: "19,250.00" },
+    { label: "FTSE 100", value: "8,320.00" },
+    { label: "DAX", value: "19,150.00" },
+    { label: "Nikkei 225", value: "39,400.00" },
+    { label: "Hang Seng", value: "19,800.00" },
+    { label: "USD/NGN", value: "1,720.00" },
+    { label: "EUR/USD", value: "1.0540" },
+    { label: "GBP/USD", value: "1.2650" },
+    { label: "USD/JPY", value: "154.50" },
+    { label: "USD/ILS", value: "3.75" },
+    { label: "Bitcoin", value: "96,250.00" },
+    { label: "Ethereum", value: "3,210.00" },
+  ]);
 
   return (
     <div className="bg-hbrz-blue border-b border-white/10 overflow-hidden py-2.5 select-none shadow-inner">
