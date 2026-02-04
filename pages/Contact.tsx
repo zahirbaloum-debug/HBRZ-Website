@@ -1,29 +1,77 @@
-import emailjs from '@emailjs/browser';
-import type React from 'react';
-import { useState } from 'react';
+import emailjs from "@emailjs/browser";
+import type React from "react";
+import { useState } from "react";
+
+// Utility functions for validation and sanitization
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const sanitizeInput = (input: string): string => {
+  return input.replace(/<[^>]*>/g, "").trim();
+};
+
+const validateLength = (input: string, min: number, max: number): boolean => {
+  const length = input.trim().length;
+  return length >= min && length <= max;
+};
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [fullName, setFullName] = useState('');
-  const [organization, setOrganization] = useState('');
-  const [email, setEmail] = useState('');
-  const [inquiryType, setInquiryType] = useState('');
-  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [email, setEmail] = useState("");
+  const [inquiryType, setInquiryType] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const serviceId = 'service_jicy06g';
-    const templateId = 'template_fsyhxji';
-    const publicKey = '2Stb0Xb7oNBWEwb1Z';
+    // Prevent double submission
+    if (isSubmitting) return;
+
+    // Validate inputs
+    if (!validateLength(fullName, 2, 100)) {
+      alert("Full name must be between 2 and 100 characters.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (!validateLength(organization, 2, 100)) {
+      alert("Organization name must be between 2 and 100 characters.");
+      return;
+    }
+
+    if (!validateLength(message, 10, 2000)) {
+      alert("Message must be between 10 and 2000 characters.");
+      return;
+    }
+
+    if (!inquiryType) {
+      alert("Please select an inquiry type.");
+      return;
+    }
+
+    const serviceId = "service_jicy06g";
+    const templateId = "template_fsyhxji";
+    const publicKey = "2Stb0Xb7oNBWEwb1Z";
+
+    setIsSubmitting(true);
 
     try {
+      // Sanitize inputs before sending
       const templateParams = {
-        from_name: fullName,
-        from_email: email,
-        organization,
-        inquiry_type: inquiryType,
-        message,
+        from_name: sanitizeInput(fullName),
+        from_email: sanitizeInput(email),
+        organization: sanitizeInput(organization),
+        inquiry_type: sanitizeInput(inquiryType),
+        message: sanitizeInput(message),
       };
 
       await emailjs.send(serviceId, templateId, templateParams, {
@@ -32,32 +80,25 @@ const Contact: React.FC = () => {
           throttle: 10000, // 10 seconds between submissions
         },
         blockList: {
-          watchVariable: 'from_email',
+          watchVariable: "from_email",
         },
       });
 
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 5000);
 
-      setFullName('');
-      setOrganization('');
-      setEmail('');
-      setInquiryType('');
-      setMessage('');
+      setFullName("");
+      setOrganization("");
+      setEmail("");
+      setInquiryType("");
+      setMessage("");
     } catch (err) {
-      const origin = window.location.origin;
-      const msg =
-        typeof err === 'object' && err && 'text' in (err as any)
-          ? (err as any).text
-          : String(err);
-      console.error('EmailJS send error:', err);
-      if (msg && msg.toLowerCase().includes('origin is not allowed')) {
-        alert(
-          `Sending blocked: authorize "${origin}" in EmailJS Dashboard → Account → Security → Allowed Origins, then retry.`,
-        );
-      } else {
-        alert('Sorry — your message could not be sent. Please try again.');
-      }
+      console.error("EmailJS send error:", err);
+      alert(
+        "Unable to send your message at this time. Please try again later or contact us directly at Info@hbrzglobalpurity.com",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -309,13 +350,17 @@ const Contact: React.FC = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-hbrz-blue text-white font-bold py-4 rounded hover:bg-opacity-90 transition-all shadow-md uppercase tracking-widest text-sm"
+                    disabled={isSubmitting}
+                    className="w-full bg-hbrz-blue text-white font-bold py-4 rounded hover:bg-opacity-90 transition-all shadow-md uppercase tracking-widest text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit Professional Inquiry
+                    {isSubmitting
+                      ? "Sending..."
+                      : "Submit Professional Inquiry"}
                   </button>
                   <p className="text-[10px] text-gray-400 text-center italic">
                     By submitting this form, you acknowledge that HBRZ operates
-                    under strict AML/KYC protocols.
+                    under strict AML/KYC protocols and agree to our data
+                    handling practices.
                   </p>
                 </form>
               )}
