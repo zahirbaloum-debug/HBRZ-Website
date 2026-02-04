@@ -1,20 +1,55 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# HBRZ Global Purity Trading and Consulting Services
 
-# Run and deploy your AI Studio app
+Official website for HBRZ Global Purity Trading and Consulting Services Ltd.
 
-This contains everything you need to run your app locally.
+## 🚀 Tech Stack
 
-View your app in AI Studio: https://ai.studio/apps/drive/121uUTH0w1EFLexuZlzv9FLqh5Xl7VYVu
+- **Framework:** React 19 + TypeScript
+- **Build Tool:** Vite 6
+- **Styling:** Tailwind CSS v4
+- **Routing:** React Router DOM v7
+- **Email Service:** EmailJS
+- **Code Quality:** Biome.js
+- **Deployment:** Vercel
 
-## Run Locally
+## 🛠️ Setup & Installation
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js 18+
 
+1. **Clone the repository:**
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   git clone https://github.com/zahirbaloum-debug/HBRZ-Website.git
+   cd HBRZ-Website
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run development server:**
+   ```bash
+   npm run dev
+   ```
+
+## 📜 Available Scripts
+
+| Script             | Description               |
+| ------------------ | ------------------------- |
+| `npm run dev`      | Start development server  |
+| `npm run build`    | Build for production      |
+| `npm run preview`  | Preview production build  |
+| `npm run lint`     | Lint code with Biome.js   |
+| `npm run lint:fix` | Fix linting issues        |
+| `npm run format`   | Format code with Biome.js |
+
+## 🎨 Brand Colors
+
+- **HBRZ Blue:** `#002B5B`
+- **HBRZ Gold:** `#C5A021`
+
+## License
+
+Copyright 2025 HBRZ Global Purity Trading and Consulting Services Ltd. All rights reserved.
