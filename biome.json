@@ -25,6 +25,12 @@
       "quoteStyle": "single"
     }
   },
+  "css": {
+    "parser": {
+      "cssModules": false,
+      "allowWrongLineComments": true
+    }
+  },
   "assist": {
     "enabled": true,
     "actions": {

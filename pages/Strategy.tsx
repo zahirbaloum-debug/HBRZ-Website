@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const Strategy: React.FC = () => {
   useEffect(() => {
@@ -8,6 +9,12 @@ const Strategy: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Our Strategy - Operational Framework"
+        description="HBRZ's strategic approach emphasizes governance, compliance discipline, systems-based operations, and long-term institutional value creation across consulting and advisory services."
+        keywords="business strategy, operational framework, governance approach, institutional development, compliance systems"
+        canonical="https://hbrzglobalpurity.com/about/strategy"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

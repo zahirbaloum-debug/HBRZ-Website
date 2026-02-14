@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const About: React.FC = () => {
   useEffect(() => {
@@ -8,6 +9,12 @@ const About: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="About Us - Our Story"
+        description="Learn about HBRZ Global Purity Trading and Consulting Services. Founded on principles of transparency and institutional integrity, we provide governance-aligned consulting and commodity trade facilitation services."
+        keywords="about HBRZ, institutional consulting Nigeria, corporate governance, transparency, commodity trading company"
+        canonical="https://hbrzglobalpurity.com/about"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

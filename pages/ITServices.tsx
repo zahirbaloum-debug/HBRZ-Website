@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const ITServices: React.FC = () => {
   useEffect(() => {
@@ -8,6 +9,12 @@ const ITServices: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="IT Advisory & Systems Support Services"
+        description="HBRZ provides general IT advisory and systems support services including technology assessment, systems optimization, digital workflow design, and business process digitization."
+        keywords="IT advisory services, systems support, technology consulting, digital transformation, business systems optimization"
+        canonical="https://hbrzglobalpurity.com/services/it"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center relative z-10">

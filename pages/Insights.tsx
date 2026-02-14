@@ -1,24 +1,40 @@
-import emailjs from "@emailjs/browser";
-import type React from "react";
-import { useEffect, useState } from "react";
-
-// Utility functions for validation and sanitization
-const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-const sanitizeInput = (input: string): string => {
-  return input.replace(/<[^>]*>/g, "").trim();
-};
+import emailjs from '@emailjs/browser';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import SEO from '../components/SEO';
+import { TIMING } from '../utils/constants';
+import { sanitizeInput, validateEmail } from '../utils/validation';
 
 const Insights: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Handle success message timeout cleanup to prevent memory leaks and race conditions
+  useEffect(() => {
+    if (submitted) {
+      // Clear any existing timer to prevent race conditions
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      timerRef.current = setTimeout(() => {
+        setSubmitted(false);
+        timerRef.current = null;
+      }, TIMING.SUCCESS_MESSAGE_DURATION);
+    }
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [submitted]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,45 +42,50 @@ const Insights: React.FC = () => {
     // Prevent double submission
     if (isSubmitting) return;
 
-    // Validate email
-    if (!validateEmail(email)) {
-      alert("Please enter a valid email address.");
+    // Clear previous error
+    setError('');
+
+    // Sanitize input first
+    const sanitizedEmail = sanitizeInput(email);
+
+    // Validate sanitized email
+    if (!validateEmail(sanitizedEmail)) {
+      setError('Please enter a valid email address.');
       return;
     }
 
-    const serviceId = "service_jicy06g";
-    const templateId = "template_fsyhxji";
-    const publicKey = "2Stb0Xb7oNBWEwb1Z";
+    const serviceId = 'service_jicy06g';
+    const templateId = 'template_fsyhxji';
+    const publicKey = '2Stb0Xb7oNBWEwb1Z';
 
     setIsSubmitting(true);
 
     try {
-      // Sanitize email before sending
+      // Use already sanitized email
       const templateParams = {
-        from_name: "Subscriber",
-        from_email: sanitizeInput(email),
-        organization: "N/A",
-        inquiry_type: "Newsletter Subscription",
-        message: "Please add this email to the subscription list.",
+        from_name: 'Subscriber',
+        from_email: sanitizedEmail,
+        organization: 'N/A',
+        inquiry_type: 'Newsletter Subscription',
+        message: 'Please add this email to the subscription list.',
       };
 
       await emailjs.send(serviceId, templateId, templateParams, {
         publicKey: publicKey,
         limitRate: {
-          throttle: 10000, // 10 seconds between submissions
+          throttle: TIMING.EMAILJS_THROTTLE,
         },
         blockList: {
-          watchVariable: "from_email",
+          watchVariable: 'from_email',
         },
       });
       setSubmitted(true);
-      setEmail("");
-      setTimeout(() => setSubmitted(false), 5000);
-      alert("Successfully subscribed to Institutional Briefs!");
+      setError('');
+      setEmail('');
     } catch (err) {
-      console.error("EmailJS subscription error:", err);
-      alert(
-        "Unable to process your subscription at this time. Please try again later or contact us at Info@hbrzglobalpurity.com",
+      console.error('EmailJS subscription error:', err);
+      setError(
+        'Unable to process your subscription at this time. Please try again later or contact us at Info@hbrzglobalpurity.com',
       );
     } finally {
       setIsSubmitting(false);
@@ -73,28 +94,34 @@ const Insights: React.FC = () => {
 
   const papers = [
     {
-      category: "Strategic Brief",
-      title: "Nigeria’s Trade Documentation Framework",
-      desc: "An institutional overview of the Central Bank of Nigeria’s Form NXP process and its relevance to governance and documentation standards.",
+      category: 'Strategic Brief',
+      title: 'Nigeria’s Trade Documentation Framework',
+      desc: 'An institutional overview of the Central Bank of Nigeria’s Form NXP process and its relevance to governance and documentation standards.',
     },
     {
-      category: "Compliance Brief",
-      title: "Trade Governance in West Africa",
-      desc: "An analytical perspective on regulatory alignment and governance frameworks supporting responsible and transparent commodity market participation.",
+      category: 'Compliance Brief',
+      title: 'Trade Governance in West Africa',
+      desc: 'An analytical perspective on regulatory alignment and governance frameworks supporting responsible and transparent commodity market participation.',
     },
     {
-      category: "Operational Systems Note",
-      title: "Coordinated Process Models for Cross-Border Commerce",
-      desc: "A systems-based perspective on structured coordination between regional and international commercial processes.",
+      category: 'Operational Systems Note',
+      title: 'Coordinated Process Models for Cross-Border Commerce',
+      desc: 'A systems-based perspective on structured coordination between regional and international commercial processes.',
     },
   ];
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Insights & Updates"
+        description="Stay informed with HBRZ's latest insights on institutional consulting, commodity markets, governance trends, and advisory best practices. Subscribe for updates."
+        keywords="business insights, consulting updates, commodity market analysis, governance trends, institutional advisory"
+        canonical="https://hbrzglobalpurity.com/insights"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center grayscale"></div>
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center grayscale" />
         </div>
         <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
           <span className="text-hbrz-gold text-xs font-bold uppercase tracking-[0.4em] mb-4 block">
@@ -116,9 +143,9 @@ const Insights: React.FC = () => {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {papers.map((paper, idx) => (
+            {papers.map((paper) => (
               <div
-                key={idx}
+                key={paper.title}
                 className="group border border-gray-100 p-10 bg-white hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col justify-between h-full border-t-4 hover:border-t-hbrz-gold border-t-hbrz-blue"
               >
                 <div>
@@ -154,23 +181,48 @@ const Insights: React.FC = () => {
           <form
             className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto"
             onSubmit={handleSubscribe}
+            noValidate
           >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Professional Email Address"
-              className="flex-grow px-6 py-4 rounded-sm border border-gray-200 focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all text-sm"
-              required
-            />
+            <div className="flex-grow">
+              <input
+                type="email"
+                id="newsletter-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Professional Email Address"
+                aria-label="Email address for newsletter subscription"
+                aria-invalid={!!error}
+                aria-describedby={error ? 'email-error' : undefined}
+                className={`w-full px-6 py-4 rounded-sm border ${error ? 'border-red-500' : 'border-gray-200'} focus:border-hbrz-gold focus:ring-1 focus:ring-hbrz-gold outline-none transition-all text-sm`}
+                required
+              />
+              {error && (
+                <p
+                  id="email-error"
+                  className="text-red-600 text-xs mt-2"
+                  role="alert"
+                >
+                  {error}
+                </p>
+              )}
+            </div>
             <button
               type="submit"
               disabled={isSubmitting}
               className="bg-hbrz-blue text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-xs hover:bg-opacity-90 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Subscribing..." : "Subscribe"}
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
+          {submitted && (
+            <p
+              className="mt-4 text-green-600 text-sm font-medium"
+              role="status"
+              aria-live="polite"
+            >
+              Successfully subscribed! Check your email for confirmation.
+            </p>
+          )}
           <p className="mt-6 text-[10px] text-gray-400 uppercase tracking-widest">
             HBRZ values your privacy and strictly adheres to professional
             communication standards.

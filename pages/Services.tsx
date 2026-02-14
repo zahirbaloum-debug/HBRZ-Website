@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Services: React.FC = () => {
   useEffect(() => {
@@ -32,6 +33,12 @@ const Services: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Our Services - Consulting, Trading & IT Advisory"
+        description="HBRZ offers institutional consulting, commodity trade facilitation, export coordination, and IT advisory services. Serving government agencies, private sector, and international partners in Nigeria and USA."
+        keywords="institutional consulting services, commodity trading, IT advisory, export coordination, capacity building, strategic planning"
+        canonical="https://hbrzglobalpurity.com/services"
+      />
       {/* Header */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const Mission: React.FC = () => {
   useEffect(() => {
@@ -8,6 +9,12 @@ const Mission: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Our Mission - Institutional Excellence"
+        description="HBRZ's mission is to provide governance-aligned consulting, advisory services, and structured coordination for lawful commodity market participation with transparency and institutional integrity."
+        keywords="HBRZ mission, institutional consulting, governance framework, commodity market advisory, transparency"
+        canonical="https://hbrzglobalpurity.com/about/mission"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

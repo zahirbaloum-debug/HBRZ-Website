@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const Compliance: React.FC = () => {
   useEffect(() => {
@@ -8,6 +9,12 @@ const Compliance: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Compliance & Governance Framework"
+        description="HBRZ operates with strong governance and compliance principles. Learn about our regulatory framework, AML/CFT policies, export compliance, and institutional standards."
+        keywords="compliance framework, corporate governance, AML CFT, regulatory compliance, export regulations, institutional standards"
+        canonical="https://hbrzglobalpurity.com/compliance"
+      />
       {/* Header */}
       <section className="bg-gray-50 py-24 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

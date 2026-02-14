@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 import AfricaGlobe from '../Pictures/Africa Globe.png';
 
 const Trading: React.FC = () => {
@@ -9,6 +10,12 @@ const Trading: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Commodity Trade Facilitation Services"
+        description="HBRZ provides advisory and coordination support for lawful commodity trade activities, focusing on precious metals with structured governance and compliance frameworks."
+        keywords="commodity trade facilitation, precious metals trading, trade intermediation, export coordination Nigeria, NEPC compliance"
+        canonical="https://hbrzglobalpurity.com/services/trading"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
