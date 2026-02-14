@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "kill-ports": "lsof -ti:3000,3001,4173 | xargs kill -9 || true"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
