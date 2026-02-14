@@ -1,0 +1,16 @@
+{
+  "name": "HBRZ Global Purity Trading and Consulting Services",
+  "short_name": "HBRZ Global",
+  "description": "Institutional consulting, commodity trade facilitation, and IT advisory services in Nigeria and USA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#002B5B",
+  "theme_color": "#002B5B",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

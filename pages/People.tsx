@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const People: React.FC = () => {
   useEffect(() => {
@@ -67,6 +68,12 @@ const People: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Our People - Leadership & Governance"
+        description="Meet the Board of Directors and executive leadership team at HBRZ Global Purity. Experienced professionals committed to institutional excellence, governance, and transparency."
+        keywords="HBRZ leadership, board of directors, executive team, corporate governance, institutional management, professional team"
+        canonical="https://hbrzglobalpurity.com/about/people"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

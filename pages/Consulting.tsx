@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const Consulting: React.FC = () => {
   useEffect(() => {
@@ -8,6 +9,12 @@ const Consulting: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Institutional Consulting & Advisory Services"
+        description="HBRZ provides consulting services to government institutions, MDAs, and private sector organizations. Strategic planning, trade advisory, project coordination, and capacity building."
+        keywords="institutional consulting, government advisory services, strategic planning, capacity building, organizational development"
+        canonical="https://hbrzglobalpurity.com/services/consulting"
+      />
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl font-bold text-white mb-6">

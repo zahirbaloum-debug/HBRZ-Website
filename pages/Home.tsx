@@ -1,5 +1,6 @@
 import type React from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Home: React.FC = () => {
   const whatWeDo = [
@@ -102,6 +103,12 @@ const Home: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Commodity Trading & Institutional Consulting Nigeria"
+        description="HBRZ Global Purity provides institutional consulting, commodity trade facilitation, export coordination, and IT advisory services in Nigeria and USA. Specializing in precious metals, NEPC compliance, and governance-aligned consulting."
+        keywords="commodity trading Nigeria, precious metals trading, institutional consulting, export coordination, NEPC compliance, CBN Form NXP, trade facilitation, IT advisory services Nigeria, cross-border consulting"
+        canonical="https://hbrzglobalpurity.com/"
+      />
       {/* Hero Section */}
       <section className="relative bg-hbrz-blue py-32 md:py-48 overflow-hidden">
         <div className="absolute inset-0 opacity-15">

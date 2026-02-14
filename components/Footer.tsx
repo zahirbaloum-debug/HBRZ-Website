@@ -134,15 +134,9 @@ const Footer: React.FC = () => {
             Consulting Services Ltd.
           </p>
           <div className="flex space-x-8 mt-6 md:mt-0">
-            <span className="cursor-pointer hover:text-white transition-colors">
-              Privacy Policy
-            </span>
-            <span className="cursor-pointer hover:text-white transition-colors">
-              Terms of Service
-            </span>
-            <span className="cursor-pointer hover:text-white transition-colors">
-              AML Policy
-            </span>
+            <span className="text-gray-500">Privacy Policy</span>
+            <span className="text-gray-500">Terms of Service</span>
+            <span className="text-gray-500">AML Policy</span>
           </div>
         </div>
       </div>

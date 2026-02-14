@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Careers: React.FC = () => {
   useEffect(() => {
@@ -24,6 +25,12 @@ const Careers: React.FC = () => {
 
   return (
     <div className="animate-fadeIn">
+      <SEO
+        title="Careers - Join Our Team"
+        description="Explore career opportunities at HBRZ Global Purity. We seek professionals with institutional rigor, analytical excellence, and a global perspective for consulting and advisory roles."
+        keywords="HBRZ careers, consulting jobs Nigeria, institutional consulting careers, advisory positions, professional opportunities"
+        canonical="https://hbrzglobalpurity.com/about/careers"
+      />
       {/* Hero Section */}
       <section className="bg-hbrz-blue py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">

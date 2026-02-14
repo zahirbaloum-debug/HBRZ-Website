@@ -1,5 +1,5 @@
-import type React from "react";
-import { useState } from "react";
+import type React from 'react';
+import { useState } from 'react';
 
 interface TickerData {
   label: string;
@@ -8,28 +8,28 @@ interface TickerData {
 
 const Ticker: React.FC = () => {
   const [data] = useState<TickerData[]>([
-    { label: "XAU/USD", value: "2,685.50" },
-    { label: "XAG/USD", value: "31.25" },
-    { label: "Platinum", value: "985.00" },
-    { label: "Palladium", value: "1,010.00" },
-    { label: "Copper", value: "4.15" },
-    { label: "Brent Crude", value: "74.20" },
-    { label: "WTI", value: "70.85" },
-    { label: "Natural Gas", value: "3.12" },
-    { label: "Dow Jones", value: "43,950.00" },
-    { label: "S&P 500", value: "5,980.00" },
-    { label: "NASDAQ", value: "19,250.00" },
-    { label: "FTSE 100", value: "8,320.00" },
-    { label: "DAX", value: "19,150.00" },
-    { label: "Nikkei 225", value: "39,400.00" },
-    { label: "Hang Seng", value: "19,800.00" },
-    { label: "USD/NGN", value: "1,720.00" },
-    { label: "EUR/USD", value: "1.0540" },
-    { label: "GBP/USD", value: "1.2650" },
-    { label: "USD/JPY", value: "154.50" },
-    { label: "USD/ILS", value: "3.75" },
-    { label: "Bitcoin", value: "96,250.00" },
-    { label: "Ethereum", value: "3,210.00" },
+    { label: 'XAU/USD', value: '2,685.50' },
+    { label: 'XAG/USD', value: '31.25' },
+    { label: 'Platinum', value: '985.00' },
+    { label: 'Palladium', value: '1,010.00' },
+    { label: 'Copper', value: '4.15' },
+    { label: 'Brent Crude', value: '74.20' },
+    { label: 'WTI', value: '70.85' },
+    { label: 'Natural Gas', value: '3.12' },
+    { label: 'Dow Jones', value: '43,950.00' },
+    { label: 'S&P 500', value: '5,980.00' },
+    { label: 'NASDAQ', value: '19,250.00' },
+    { label: 'FTSE 100', value: '8,320.00' },
+    { label: 'DAX', value: '19,150.00' },
+    { label: 'Nikkei 225', value: '39,400.00' },
+    { label: 'Hang Seng', value: '19,800.00' },
+    { label: 'USD/NGN', value: '1,720.00' },
+    { label: 'EUR/USD', value: '1.0540' },
+    { label: 'GBP/USD', value: '1.2650' },
+    { label: 'USD/JPY', value: '154.50' },
+    { label: 'USD/ILS', value: '3.75' },
+    { label: 'Bitcoin', value: '96,250.00' },
+    { label: 'Ethereum', value: '3,210.00' },
   ]);
 
   return (

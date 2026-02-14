@@ -1,7 +1,7 @@
-import type React from "react";
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import Logo from "./Logo";
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import Logo from './Logo';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,24 +13,24 @@ const Navbar: React.FC = () => {
   const servicesRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Insights", path: "/insights" },
-    { name: "Compliance", path: "/compliance" },
-    { name: "Careers", path: "/about/careers" },
-    { name: "Contact", path: "/contact" },
+    { name: 'Home', path: '/' },
+    { name: 'Insights', path: '/insights' },
+    { name: 'Compliance', path: '/compliance' },
+    { name: 'Careers', path: '/about/careers' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const aboutSubLinks = [
-    { name: "Our Story", path: "/about" },
-    { name: "Mission, Vision & Value", path: "/about/mission" },
-    { name: "Our Strategy", path: "/about/strategy" },
-    { name: "Our People", path: "/about/people" },
+    { name: 'Our Story', path: '/about' },
+    { name: 'Mission, Vision & Value', path: '/about/mission' },
+    { name: 'Our Strategy', path: '/about/strategy' },
+    { name: 'Our People', path: '/about/people' },
   ];
 
   const servicesSubLinks = [
-    { name: "Commodity Trading & Intermediation", path: "/services/trading" },
-    { name: "Institutional Consulting Services", path: "/services/consulting" },
-    { name: "General IT Services", path: "/services/it" },
+    { name: 'Commodity Trading & Intermediation', path: '/services/trading' },
+    { name: 'Institutional Consulting Services', path: '/services/consulting' },
+    { name: 'General IT Services', path: '/services/it' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -39,9 +39,9 @@ const Navbar: React.FC = () => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () =>
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   const toggleFullscreen = () => {
@@ -73,8 +73,8 @@ const Navbar: React.FC = () => {
         setServicesDropdownOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -102,9 +102,9 @@ const Navbar: React.FC = () => {
             <Link
               to="/"
               className={`text-[11px] xl:text-xs font-bold uppercase tracking-widest transition-colors duration-200 whitespace-nowrap ${
-                isActive("/")
-                  ? "text-hbrz-gold border-b-2 border-hbrz-gold"
-                  : "text-gray-500 hover:text-hbrz-blue"
+                isActive('/')
+                  ? 'text-hbrz-gold border-b-2 border-hbrz-gold'
+                  : 'text-gray-500 hover:text-hbrz-blue'
               } py-2`}
             >
               Home
@@ -120,16 +120,18 @@ const Navbar: React.FC = () => {
               <button
                 type="button"
                 className={`flex items-center text-[11px] xl:text-xs font-bold uppercase tracking-widest transition-colors duration-200 whitespace-nowrap ${
-                  location.pathname === "/about" ||
-                  (location.pathname.startsWith("/about") &&
-                    location.pathname !== "/about/careers")
-                    ? "text-hbrz-gold border-b-2 border-hbrz-gold"
-                    : "text-gray-500 hover:text-hbrz-blue"
+                  location.pathname === '/about' ||
+                  (
+                    location.pathname.startsWith('/about') &&
+                      location.pathname !== '/about/careers'
+                  )
+                    ? 'text-hbrz-gold border-b-2 border-hbrz-gold'
+                    : 'text-gray-500 hover:text-hbrz-blue'
                 } py-2 focus:outline-none`}
               >
                 About Us
                 <svg
-                  className={`ml-1 h-3 w-3 transition-transform duration-200 ${aboutDropdownOpen ? "rotate-180" : ""}`}
+                  className={`ml-1 h-3 w-3 transition-transform duration-200 ${aboutDropdownOpen ? 'rotate-180' : ''}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -146,8 +148,8 @@ const Navbar: React.FC = () => {
               <div
                 className={`absolute top-full left-0 w-64 bg-white border border-gray-100 shadow-xl py-4 transition-all duration-200 origin-top transform ${
                   aboutDropdownOpen
-                    ? "scale-y-100 opacity-100 visible"
-                    : "scale-y-95 opacity-0 invisible"
+                    ? 'scale-y-100 opacity-100 visible'
+                    : 'scale-y-95 opacity-0 invisible'
                 }`}
               >
                 {aboutSubLinks.map((sub) => (
@@ -172,14 +174,14 @@ const Navbar: React.FC = () => {
               <button
                 type="button"
                 className={`flex items-center text-[11px] xl:text-xs font-bold uppercase tracking-widest transition-colors duration-200 whitespace-nowrap ${
-                  location.pathname.startsWith("/services")
-                    ? "text-hbrz-gold border-b-2 border-hbrz-gold"
-                    : "text-gray-500 hover:text-hbrz-blue"
+                  location.pathname.startsWith('/services')
+                    ? 'text-hbrz-gold border-b-2 border-hbrz-gold'
+                    : 'text-gray-500 hover:text-hbrz-blue'
                 } py-2 focus:outline-none`}
               >
                 Services
                 <svg
-                  className={`ml-1 h-3 w-3 transition-transform duration-200 ${servicesDropdownOpen ? "rotate-180" : ""}`}
+                  className={`ml-1 h-3 w-3 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180' : ''}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -196,8 +198,8 @@ const Navbar: React.FC = () => {
               <div
                 className={`absolute top-full left-0 w-80 bg-white border border-gray-100 shadow-xl py-4 transition-all duration-200 origin-top transform ${
                   servicesDropdownOpen
-                    ? "scale-y-100 opacity-100 visible"
-                    : "scale-y-95 opacity-0 invisible"
+                    ? 'scale-y-100 opacity-100 visible'
+                    : 'scale-y-95 opacity-0 invisible'
                 }`}
               >
                 <Link
@@ -220,15 +222,15 @@ const Navbar: React.FC = () => {
             </div>
 
             {navLinks
-              .filter((l) => l.path !== "/")
+              .filter((l) => l.path !== '/')
               .map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
                   className={`text-[11px] xl:text-xs font-bold uppercase tracking-widest transition-colors duration-200 whitespace-nowrap ${
                     isActive(link.path)
-                      ? "text-hbrz-gold border-b-2 border-hbrz-gold"
-                      : "text-gray-500 hover:text-hbrz-blue"
+                      ? 'text-hbrz-gold border-b-2 border-hbrz-gold'
+                      : 'text-gray-500 hover:text-hbrz-blue'
                   } py-2`}
                 >
                   {link.name}
@@ -240,8 +242,8 @@ const Navbar: React.FC = () => {
               type="button"
               onClick={toggleFullscreen}
               className="p-2 text-gray-400 hover:text-hbrz-gold transition-colors focus:outline-none flex-shrink-0"
-              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-              aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+              aria-label={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
             >
               {isFullscreen ? (
                 <svg
@@ -281,7 +283,7 @@ const Navbar: React.FC = () => {
               type="button"
               onClick={toggleFullscreen}
               className="p-2 text-gray-400 focus:outline-none"
-              aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              aria-label={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
             >
               <svg
                 className="w-6 h-6"
@@ -339,8 +341,8 @@ const Navbar: React.FC = () => {
                 to={link.path}
                 className={`block px-4 py-3 rounded-md text-base font-bold uppercase tracking-wider ${
                   isActive(link.path)
-                    ? "text-hbrz-gold bg-gray-50"
-                    : "text-gray-600 hover:text-hbrz-blue"
+                    ? 'text-hbrz-gold bg-gray-50'
+                    : 'text-gray-600 hover:text-hbrz-blue'
                 }`}
               >
                 {link.name}
